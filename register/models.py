@@ -1,17 +1,17 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+CurrencyChoices = [
+    ('USD', 'USD'),
+    ('EUR', 'EUR'),
+    ('GBP', 'GBP'),
+]
+
 
 # Create your models here.
-class User(models.Model):
-    CurrencyChoices = [
-        ('USD', 'USD'),
-        ('EUR', 'EUR'),
-        ('GBP', 'GBP'),
-    ]
-
-    username = models.CharField(max_length=50, unique=True)
-    email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
+class User(AbstractUser):
     currency = models.CharField(choices=CurrencyChoices, max_length=3)
-    balance = models.FloatField()
+    balance = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f"{self.username} - {self.currency} - {self.balance}"
