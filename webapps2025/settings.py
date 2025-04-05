@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'payapp',
     'crispy_forms',
     "crispy_bootstrap4",
+    'conversion',
+    'rest_framework',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
@@ -49,9 +51,11 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 AUTH_USER_MODEL = 'register.User'
 
-LOGOUT_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = '/webapps2025/register/login'
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/webapps2025/register/home'
+
+LOGIN_URL = '/webapps2025/register/login/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

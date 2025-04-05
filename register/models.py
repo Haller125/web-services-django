@@ -10,7 +10,7 @@ CurrencyChoices = [
 
 # Create your models here.
 class User(AbstractUser):
-    currency = models.CharField(choices=CurrencyChoices, max_length=3)
+    currency = models.CharField(choices=CurrencyChoices, max_length=3, default='GBP')
     balance = models.FloatField(default=0.0)
 
     def __str__(self):
