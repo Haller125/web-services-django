@@ -1,0 +1,41 @@
+{% extends 'payapp/base_transactions.html' %}
+
+{% block hero_text %} Requested moneys {% endblock %}
+
+{% block table %}
+    <h1>List of requested moneys</h1>
+
+    <table border="1" class="table">
+        <thead>
+            <tr>
+                <th scope="col">Sender</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Timestamp</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+            <tr>
+                <td>{{ request.sender }}</td>
+                <td>{{ request.amount }} {{transaction.currency}}</td>
+                <td>{{ request.timestamp }}</td>
+                <td>
+                    <form method="POST" action="{% url 'payapp:accept_request' request.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-success">Accept</button>
+                    </form>
+                    <form method="POST" action="{% url 'payapp:reject_request' request.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-error">Reject</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4"> No requests found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

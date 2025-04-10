@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Transactions
+{% endblock %}
+
+{% block content %}
+    <h1>{% block hero_text %} {% endblock %}</h1>
+
+    <p> Welcome, {{ user.username }} </p>
+    <p> Your balance: {{ user.balance }} {{ user.currency }} </p>
+    <div class="pb-3 flex">
+        <a href="{% url 'register:home' %}"> <button class="btn btn-primary"> Go to profile </button> </a>
+        <a href="{% url 'payapp:requests' %}"> <button class="btn btn-primary"> Go to requested transactions </button> </a>
+        <a href="{% url 'payapp:transactions' %}"> <button class="btn btn-primary"> Go to transactions </button> </a>
+    </div>
+    <div class="pb-3 flex">
+        <a href="{% url 'payapp:make_payment' %}"> <button class="btn btn-primary"> Make payment </button> </a>
+        <a href="{% url 'payapp:make_request' %}"> <button class="btn btn-secondary"> Make request </button> </a>
+    </div>
+
+    {% if user.is_superuser %}
+        <p>You are a superuser with full system access.</p>
+        <a href="{% url 'register:register_admin' %}"> <button> Register another admin </button> </a>
+        <a href="{% url 'register:list_of_users' %}"> <button> See list of users </button> </a>
+        <a href="{% url 'payapp:all_transactions' %}"> <button> See all transactions </button> </a>
+    {% endif %}
+
+    {% block table %}
+
+    {% endblock %}
+{% endblock %}
