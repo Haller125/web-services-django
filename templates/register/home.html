@@ -10,14 +10,16 @@
     <p>Email: {{ user.email }}</p>
     <p>Currency: {{ user.currency }}</p>
     <p>Balance: {{ user.balance }}</p>
-    <form method="post" action="{% url 'logout' %}">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-danger">Logout</button>
+    <form method="post" action="{% url 'register:logout' %}" class="pb-3">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Logout</button>
     </form>
+    <a href="{% url 'payapp:transactions' %}"> <button class="btn"> Transactions </button> </a>
 
     {% if user.is_superuser %}
         <p>You are a superuser with full system access.</p>
-        <a href="{% url 'register_admin' %}"> <button> Register another admin </button> </a>
-        <a href="{% url 'list_of_users' %}"> <button> See list of users </button> </a>
+        <a href="{% url 'register:register_admin' %}"> <button> Register another admin </button> </a>
+        <a href="{% url 'register:list_of_users' %}"> <button> See list of users </button> </a>
+        <a href="{% url 'payapp:all_transactions' %}"> <button> See all transactions </button> </a>
     {% endif %}
 {% endblock %}

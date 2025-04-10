@@ -1,3 +1,4 @@
+from django.http import HttpResponseServerError
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, AdminRegistrationForm
 from django.contrib.auth.decorators import login_required
@@ -10,10 +11,19 @@ def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
+            user = form.save(commit=False)
             user_currency = form.cleaned_data.get('currency')
-            default_money = requests.get(f'http://localhost:8000/webapps2025/conversion/usd/{user_currency}/750')
-            form.save()
-            return redirect('login')
+            try:
+                response = requests.get(
+                    f'http://localhost:8000/webapps2025/conversion/gbp/{user_currency}/750'
+                )
+            except Exception:
+                return HttpResponseServerError("Currency conversion failed.")
+            response.raise_for_status()
+            converted = response.json()['converted']
+            user.balance = converted
+            user.save()
+            return redirect('register:login')
     else:
         form = UserRegistrationForm()
     return render(request, 'register/register.html', {'form': form})
@@ -22,19 +32,27 @@ def register(request):
 def home(request):
     return render(request, 'register/home.html', {'user': request.user})
 
-# TODO: add template
 @admin_required
 def register_admin(request):
     if request.method == 'POST':
         form = AdminRegistrationForm(request.POST)
         if form.is_valid():
+            user = form.save(commit=False)
             user_currency = form.cleaned_data.get('currency')
-            default_money = requests.get(f'http://localhost:8000/webapps2025/conversion/usd/{user_currency}/750')
-            form.save()
-            return redirect('home')
+            try:
+                response = requests.get(
+                    f'http://localhost:8000/webapps2025/conversion/gbp/{user_currency}/750'
+                )
+            except Exception:
+                return HttpResponseServerError("Currency conversion failed.")
+            response.raise_for_status()
+            converted = response.json()['converted']
+            user.balance = converted
+            user.save()
+            return redirect('register:login')
     else:
         form = AdminRegistrationForm()
-    return render(request, 'register/register.html', {'form': form})
+    return render(request, 'register/register_admin.html', {'form': form})
 
 
 @admin_required

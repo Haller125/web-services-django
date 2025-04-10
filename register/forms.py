@@ -13,6 +13,6 @@ class UserRegistrationForm(UserCreationForm):
 class AdminRegistrationForm(AdminUserCreationForm):
     currency = forms.ChoiceField(choices=CurrencyChoices)
 
-    class Meta:
+    class Meta(AdminUserCreationForm.Meta):
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'currency', 'password1', 'password2', 'is_superuser')
+        fields = ('username', 'email', 'password1', 'password2', 'is_superuser', 'currency')

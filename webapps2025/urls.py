@@ -16,10 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.urls import reverse_lazy
+from django.views.generic.base import RedirectView
+
 
 urlpatterns = [
     path('webapps2025/admin/', admin.site.urls),
     path('webapps2025/register/', include('register.urls')),
-    # path('webapps2025/payapp/', include('payapp.urls')),
+    path('webapps2025/payapp/', include('payapp.urls')),
     path('webapps2025/conversion/', include('conversion.urls')),
+    path('webapps2025/', RedirectView.as_view(url=reverse_lazy('register:home'))),
+    path('', RedirectView.as_view(url=reverse_lazy('register:home')))
 ]
